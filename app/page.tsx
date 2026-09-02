@@ -61,7 +61,7 @@ export default function TelemetryDashboard() {
     }
   }, []);
 
-  // Polling function that hits read APIs every 1 sec
+  // Polling function that hits read APIs every 3 sec
   const pollApis = useCallback(async () => {
     try {
       const [resWater, resTemp] = await Promise.all([
@@ -80,12 +80,12 @@ export default function TelemetryDashboard() {
         setCurrentWater(waterVal);
         setCurrentTemp(tempVal);
 
-        // Only sync slider if user hasn't interacted with it in the last 2000ms
+        // Only sync slider if user hasn't interacted with it in the last 3500ms
         const now = Date.now();
-        if (now - lastWaterEditTime.current > 2000) {
+        if (now - lastWaterEditTime.current > 3500) {
           setSliderWater(waterVal);
         }
-        if (now - lastTempEditTime.current > 2000) {
+        if (now - lastTempEditTime.current > 3500) {
           setSliderTemp(tempVal);
         }
 
@@ -99,10 +99,10 @@ export default function TelemetryDashboard() {
     }
   }, []);
 
-  // Polling timer 1 second
+  // Polling timer 3 seconds
   useEffect(() => {
     pollApis();
-    const interval = setInterval(pollApis, 1000);
+    const interval = setInterval(pollApis, 3000);
     return () => clearInterval(interval);
   }, [pollApis]);
 
@@ -163,14 +163,14 @@ export default function TelemetryDashboard() {
               Water Level & Temperature Telemetry
             </h1>
             <p className="text-sm text-slate-400 mt-1">
-              Live graph polling every 1 second
+              Live graph polling every 3 seconds
             </p>
           </div>
 
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              Live Polling (1s)
+              Live Polling (3s)
             </div>
             <button
               onClick={() => setAutoMock(!autoMock)}
@@ -190,7 +190,7 @@ export default function TelemetryDashboard() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800">
             <div>
               <h2 className="text-base font-semibold text-slate-200">Live Telemetry Graph</h2>
-              <p className="text-xs text-slate-400">Hits read APIs every 1s</p>
+              <p className="text-xs text-slate-400">Hits read APIs every 3s</p>
             </div>
 
             <div className="flex items-center gap-2">
